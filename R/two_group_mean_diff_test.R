@@ -1,4 +1,4 @@
-two_group_mean_diff_test = function(data.df, group, variable, alpha=0.05, alternative="two.sided"){
+two_group_mean_diff_test = function(data.df, group, variable, alpha=0.05, alternative="two.sided", round.digits=100){
   # 1)독립성: 독립변수의 그룹 군은 서로 독립적 이여야 한다.
   # 2)정규성: 독립변수에 따른 종속변수는 정규분포를 만족해야한다.
   # 3)등분산성: 독립변수에 따른 종속변수 분포의 분산은 각 군마다 동일하다.
@@ -25,17 +25,20 @@ two_group_mean_diff_test = function(data.df, group, variable, alpha=0.05, altern
   #=============================================================================
   x1_norm = shapiro.test(x1)
   x2_norm = shapiro.test(x2)
-  normality = list(x1_norm$p.value, x2_norm$p.value)
+  x1_pval = x1_norm$p.value %>% format(,scientific=F) %>% as.numeric
+  x2_pval = x2_norm$p.value %>% format(,scientific=F) %>% as.numeric
+  normality = list(round(x1_pval, round.digits), round(x2_pval, round.digits))
   names(normality) = c(name_group_1, name_group_2)
   results.list[[1]] = normality
-  names(results.list)[1] = "Normality(Shapiro.test)"
+  names(results.list)[1] = "Normality(Shapiro.test)_p.val"
 
   #=============================================================================
   # 2) homoscedasticity : 등분산검정
   #=============================================================================
   results_var.test = var.test(x1, x2)
-  results.list[[2]] = results_var.test$p.value
-  names(results.list)[2] = "Homoscedasticity"
+  var_pval = format(results_var.test$p.value, scientific = F) %>% as.numeric
+  results.list[[2]] = round(var_pval,round.digits)
+  names(results.list)[2] = "Homoscedasticity_p.val"
 
   # normal O
   is_normal = x1_norm$p.value>alpha && x2_norm$p.value>alpha
@@ -45,15 +48,16 @@ two_group_mean_diff_test = function(data.df, group, variable, alpha=0.05, altern
       # 3) t.test : 정규성O, 등분산O -> pooled variance를 이용한 t-test를 적용한다 (var.equal=TRUE)
       #=============================================================================
       results_t.test = t.test(x1, x2, var.equal = T)
-      results_t.test = t.test(x1, x2, var.equal = F)
-      results.list[[3]] = c(results_t.test$p.value)
+      t.test_pval = results_t.test$p.value %>% format(scientific=F) %>% as.numeric
+      results.list[[3]] = round(t.test_pval, round.digits)
       names(results.list)[3] = "Mean_difference(T.test)"
     }else{
       #=============================================================================
       # 3) t.test : 정규성O, 등분산X -> Welch의 t-test를 적용한다 (t.test())
       #=============================================================================
       results_t.test = t.test(x1, x2, var.equal = F)
-      results.list[[3]] = c(results_t.test$p.value)
+      t.test_pval = results_t.test$p.value %>% format(scientific=F) %>% as.numeric
+      results.list[[3]] = round(t.test_pval, round.digits)
       names(results.list)[3] = "Mean_difference(Welch)"
     }
   }else{
@@ -61,7 +65,8 @@ two_group_mean_diff_test = function(data.df, group, variable, alpha=0.05, altern
     # 3) Mann-Whitney : 정규성X -> 비모수 검정
     #=============================================================================
     results_mean.test = wilcox.test(x1, x2, alternative, conf.level = 1-alpha)
-    results.list[[3]] = c(results_mean.test$p.value)
+    mean.test_pval = results_mean.test$p.value %>% format(scientific=F) %>% as.numeric
+    results.list[[3]] = round(mean.test_pval, round.digits)
     names(results.list)[3] = "Mean_difference(Mann-Whitney)"
   }
   return(results.list)
