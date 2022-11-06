@@ -1,7 +1,7 @@
 test_MeanDiff_Multi_Export = function(data.df, group, variables, alpha=0.05, round.digits=100,
                                       colors.list = "#F781F3",
                                       save_path = "G:/내 드라이브/[백업] 공부/[백업] 공부_논문/논문_Ohio State Interventional Radiology",
-                                      file_name = "[Results] Gender_MeanDiff"){
+                                      file_name){
   # variables = c("PSY SUM", "PSYDEV",
   #               "EMOT SUM", "EMOTDEV",
   #               "SOC SUM", "SOCDEV",
@@ -16,7 +16,6 @@ test_MeanDiff_Multi_Export = function(data.df, group, variables, alpha=0.05, rou
   ### multiple MeanDiff
   multi_results.list = list()
   for(m in 1:length(variables)){
-    # m =1
     multi_results.list[[m]] = test_MeanDiff(data.df, group, variables[m], alpha, round.digits)
   }
 
@@ -34,7 +33,6 @@ test_MeanDiff_Multi_Export = function(data.df, group, variables, alpha=0.05, rou
   coloring_index.list = list()
   columns.list = which_col(multi_results.df, which.col = "_p.val") %>% as.list
   columns.list = c(1,columns.list)
-
 
   ### select rows for coloring except for NA
   coloring_index.list = list(NA)

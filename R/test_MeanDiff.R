@@ -3,7 +3,7 @@ test_MeanDiff = function(data.df, group, variable, alpha=0.05, round.digits=100)
   # group = "Years"
   # group = "Gender"
   # variable = "WELLNESS"
-
+  # variable = variables[m]
   ### Normality & Homoscedasticity
   results_NormHomo.df = test_Group_Normality_and_Homoscedasticity(data.df, group, variable, alpha)
 
@@ -12,9 +12,13 @@ test_MeanDiff = function(data.df, group, variable, alpha=0.05, round.digits=100)
   group_var = data.df[,group] %>% unlist %>% as.factor
   n_group = group_var %>% unique %>% length
 
+  ### p.val
+  norm_p.val = exclude_na(results_NormHomo.df$Normality_p.val)
+  homo_p.val = exclude_na(results_NormHomo.df$Homoscedasticity_p.val)
+
   ### criterion
-  is.normal = sum(results_NormHomo.df$Normality_p.val>alpha)==nrow(results_NormHomo.df)
-  is.homo = (results_NormHomo.df$Homoscedasticity_p.val>alpha)[1]
+  is.normal = sum(norm_p.val>alpha)==nrow(results_NormHomo.df)
+  is.homo = sum(homo_p.val>alpha)==2
 
   ### MeanDiff
   if(n_group==1){
@@ -25,6 +29,7 @@ test_MeanDiff = function(data.df, group, variable, alpha=0.05, round.digits=100)
     results_MeanDiff.df = test_MeanDiff_3group(data.df, group, variable, is.normal, is.homo, alpha, round.digits)
   }
   results.df = cbind(results_NormHomo.df, results_MeanDiff.df)
+
   return(results.df)
 }
 
