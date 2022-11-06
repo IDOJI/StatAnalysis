@@ -1,6 +1,6 @@
-stat_results_as_df_MeanDiff_2group_2depth = function(results.list){
+StatResults_as.df_2group_MeanDiff_2depth = function(results.list){
   ### create a df
-  results.df = matrix(" ", nrow=length(row_names), ncol=3) %>% as.data.frame
+  results.df = matrix(" ", nrow=length(results.list), ncol=3) %>% as.data.frame
 
   ### Group
   results.df[1,1] = names(results.list[[1]][[1]])[1];names(results.df)[1]="Group_1"
