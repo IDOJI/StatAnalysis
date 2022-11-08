@@ -39,12 +39,12 @@ test_MeanDiff_2group = function(data.df, group, variable, is.normal, is.homo, al
     # %>% format(scientific=T)
     TestType_MeanDiff = "Welch"
   }else if(c3){
-    # t.test : 2그룹, 정규성O, 등분산O, 대표본
+    # t.test : 2그룹, 정규성X, 등분산O, 대표본
     results_MeanDiff = t.test(cont_var~group_var, var.equal=T)
     p.val_MeanDiff = round(results_MeanDiff$p.value  %>% as.numeric, round.digits)
     TestType_MeanDiff = "t.test(Asymptotic)"
   }else if(c4){
-    # t.test : 2그룹, 정규성O, 등분산X, 대표본
+    # t.test : 2그룹, 정규성X, 등분산X, 대표본
     results_MeanDiff = t.test(cont_var~group_var, var.equal=F)
     p.val_MeanDiff = round(results_MeanDiff$p.value %>% as.numeric, round.digits)
     # %>% format(scientific=T)

@@ -1,9 +1,17 @@
-test_MeanDiff = function(data.df, group, variable, alpha=0.05, round.digits=100){
+test_MeanDiff = function(data.df, group, variable, exclude_rows=NULL, ex_reasons=NULL, alpha=0.05, round.digits=100){
   # data.df = data
   # group = "Years"
-  # group = "Gender"
+  # group = "Ethnicity"
   # variable = "WELLNESS"
   # variable = variables[m]
+
+  ### exclude some rows
+  # ex_reasons = "Small Sample Size"
+  if(!is.null(exclude_rows)){
+    excluded = data.df[exclude_rows,group] %>% unlist
+    data.df = data.df[-exclude_rows,]
+  }
+
   ### Normality & Homoscedasticity
   results_NormHomo.df = test_Group_Normality_and_Homoscedasticity(data.df, group, variable, alpha)
 
@@ -24,13 +32,35 @@ test_MeanDiff = function(data.df, group, variable, alpha=0.05, round.digits=100)
   if(n_group==1){
     stop("There is only one group.")
   }else if(n_group==2){
-    results_MeanDiff.df = test_MeanDiff_2group(data.df, group, variable, is.normal, is.homo, alpha, round.digits)
+    results_MeanDiff = test_MeanDiff_2group(data.df, group, variable, is.normal, is.homo, alpha, round.digits)
   }else{
-    results_MeanDiff.df = test_MeanDiff_3group(data.df, group, variable, is.normal, is.homo, alpha, round.digits)
+    results_MeanDiff = test_MeanDiff_3group(data.df, group, variable, is.normal, is.homo, alpha, round.digits)
   }
-  results.df = cbind(results_NormHomo.df, results_MeanDiff.df)
 
-  return(results.df)
+  ### excluding vec & response col
+  response_col_1 = c(variable, rep(" ", n_group-1))
+  if(is.null(exclude_rows)){
+    excluded.vec = rep(" ", length(response_col_1))
+  }else{
+    if(is.null(ex_reasons)){
+      bec = NULL
+    }else{
+      bec = "∵"
+    }
+    excluded.vec = c(c(exclude_rows, excluded, paste("(", bec, ex_reasons, ")", sep="")),
+                     rep(" ", length(response_col_1)-3))
+  }
+
+  ### post hoc?
+  if(is.data.frame(results_MeanDiff)){
+    final_results = cbind(Response=response_col_1, Excluded_Group_Rows=excluded.vec,results_NormHomo.df, results_MeanDiff)
+  }else{
+    response_col_2 = c(variable, rep(" ", nrow(results_MeanDiff[[2]])-1))
+    final_results = list()
+    final_results[[1]] = cbind(Response=response_col_1, Excluded_Group_Rows=excluded.vec, results_NormHomo.df, results_MeanDiff[[1]])
+    final_results[[2]] = cbind(Response=response_col_2, results_MeanDiff[[2]])
+  }
+  return(final_results)
 }
 
 |# 1)독립성: 독립변수의 그룹 군은 서로 독립적 이여야 한다.
