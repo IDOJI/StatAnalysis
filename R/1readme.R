@@ -1,0 +1,52 @@
+#=========================================================
+# ANOVA
+#=========================================================
+# test_Group_Normality_and_Homoscedasticity
+# test_Normality
+# test_Homoscedasticity
+#
+# test_MeanDiff
+# test_MeanDiff_2group
+# test_MeanDiff_3group
+# test_MeanDiff_PostHoc
+# test_MeanDiff_PostHoc_games.howell
+#
+# test_MeanDiff_Multi
+#
+# test_MeanDiff_Export
+# coloring_xlsx_cells
+#=========================================================
+# Linear Regression
+#=========================================================
+# test_Correlation
+# test_LinReg
+# test_LinReg_Plotting
+# test_LinReg_Export
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
