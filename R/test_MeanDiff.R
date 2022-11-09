@@ -62,7 +62,3 @@ test_MeanDiff = function(data.df, group, variable, exclude_rows=NULL, ex_reasons
   }
   return(final_results)
 }
-
-|# 1)독립성: 독립변수의 그룹 군은 서로 독립적 이여야 한다.
-# 2)정규성: 독립변수에 따른 종속변수는 정규분포를 만족해야한다.
-# 3)등분산성: 독립변수에 따른 종속변수 분포의 분산은 각 군마다 동일하다.

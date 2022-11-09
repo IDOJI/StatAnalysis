@@ -21,9 +21,9 @@
 # Linear Regression
 #===============================================================================
 # test_Correlation
-# test_LinReg
-# test_LinReg_Plotting
-# test_LinReg_Export
+# LinReg
+# LinReg_Plotting
+# LinReg_Export
 
 
 
