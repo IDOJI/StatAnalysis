@@ -12,15 +12,16 @@ summary_demo = function(data.df, num.demo.col=NULL, cha.demo.col=NULL, group.col
   }else{
     cha.demo_results = NULL
   }
+  if(!is.null(num.demo.col)||!is.null(char.demo.col)){
+    if(group.as.row){
+      summary_results=cbind(num.demo_results, cha.demo_results)
+    }else{
+      summary_results=rbind(num.demo_results, cha.demo_results)
+    }
+  }
   if(!is.null(path) && !is.null(file.name)){
     dir.create(path, showWarnings = F)
     write.xlsx(summary_results, file = paste(path, file.name, sep="/"), overwrite = T, rowNames=T, colNames=T)
   }
-  if(!is.null(num.demo.col)||!is.null(char.demo.col)){
-    if(group.as.row){
-      return(cbind(num.demo_results, cha.demo_results))
-    }else{
-      return(rbind(num.demo_results, cha.demo_results))
-    }
-  }
+  return(summary_results)
 }

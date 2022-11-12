@@ -1,4 +1,4 @@
-test_MeanDiff_Multi = function(data.df, group, variables, exclude_rows, ex_reasons, alpha=0.05, round.digits=100){
+test_MeanDiff_Multi = function(data.df, group, variables, exclude_rows=NULL, ex_reasons=NULL, alpha=0.05, alpha_PostHoc=0.05, round.digits=100){
   ### multiple MeanDiff
   multi_results.list = list()
   for(m in 1:length(variables)){
@@ -9,6 +9,7 @@ test_MeanDiff_Multi = function(data.df, group, variables, exclude_rows, ex_reaso
                                             exclude_rows = exclude_rows,
                                             ex_reasons=ex_reasons,
                                             alpha,
+                                            alpha_PostHoc,
                                             round.digits)
   }
 
