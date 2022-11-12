@@ -1,12 +1,26 @@
-summary_demo = function(data.df, num.demo.col, char.demo.col, group.col=NULL, group.as.row=F){
+summary_demo = function(data.df, num.demo.col=NULL, cha.demo.col=NULL, group.col=NULL, group.as.row=F, path=NULL, file.name=NULL){
   # num.demo.col = c("Age", "AHI")
   # char.demo.col = "Sex"
   # group.col = "AHI_groups"
-  num.demo_results = summary_mean_pm_sd_groups(data.df, demo.col = num.demo.col, group.col = group.col, group.as.row = group.as.row)
-  char.demo_results = summary_prop_groups(data.df, demo.col=char.demo.col, group.col=group.col, group.as.row=group.as.row)
-  if(group.as.row){
-    return(cbind(num.demo_results, char.demo_results))
+  if(!is.null(num.demo.col)){
+    num.demo_results = summary_mean_pm_sd_groups(data.df, demo.col = num.demo.col, group.col = group.col, group.as.row = group.as.row)
   }else{
-    return(rbind(num.demo_results, char.demo_results))
+    num.demo_results = NULL
+  }
+  if(!is.null(cha.demo.col)){
+    cha.demo_results = summary_prop_groups(data.df, demo.col=cha.demo.col, group.col=group.col, group.as.row=group.as.row)
+  }else{
+    cha.demo_results = NULL
+  }
+  if(!is.null(path) && !is.null(file.name)){
+    dir.create(path, showWarnings = F)
+    write.xlsx(summary_results, file = paste(path, file.name, sep="/"), overwrite = T, rowNames=T, colNames=T)
+  }
+  if(!is.null(num.demo.col)||!is.null(char.demo.col)){
+    if(group.as.row){
+      return(cbind(num.demo_results, cha.demo_results))
+    }else{
+      return(rbind(num.demo_results, cha.demo_results))
+    }
   }
 }

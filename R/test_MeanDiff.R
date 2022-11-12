@@ -1,4 +1,4 @@
-test_MeanDiff = function(data.df, group, variable, exclude_rows=NULL, ex_reasons=NULL, alpha=0.05, round.digits=100){
+test_MeanDiff = function(data.df, group, variable, exclude_rows=NULL, ex_reasons=NULL, alpha=0.05, alpha.PostHoc=0.05, round.digits=100){
   # data.df = data
   # group = "Years"
   # group = "Ethnicity"
@@ -34,7 +34,7 @@ test_MeanDiff = function(data.df, group, variable, exclude_rows=NULL, ex_reasons
   }else if(n_group==2){
     results_MeanDiff = test_MeanDiff_2group(data.df, group, variable, is.normal, is.homo, alpha, round.digits)
   }else{
-    results_MeanDiff = test_MeanDiff_3group(data.df, group, variable, is.normal, is.homo, alpha, round.digits)
+    results_MeanDiff = test_MeanDiff_3group(data.df, group, variable, is.normal, is.homo, alpha, alpha.PostHoc, round.digits)
   }
 
   ### excluding vec & response col

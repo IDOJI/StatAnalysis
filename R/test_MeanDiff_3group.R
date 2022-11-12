@@ -1,4 +1,4 @@
-test_MeanDiff_3group = function(data.df, group, variable, is.normal, is.homo, alpha=0.05, round.digits=100){
+test_MeanDiff_3group = function(data.df, group, variable, is.normal, is.homo, alpha=0.05, alpha_PostHoc=0.05, round.digits=100){
   ### have na?
   # variable = variables[1]
   group.vec = data.df[,group] %>% unlist
@@ -97,7 +97,7 @@ test_MeanDiff_3group = function(data.df, group, variable, is.normal, is.homo, al
   if(results.df$MeanDiff_p.val[1]<=alpha){
     results.list = list()
     results.list[[1]] = results.df
-    results.list[[2]] = test_MeanDiff_PostHoc(data.df, group, variable, alpha, MeanDiff_results.df = results.df)
+    results.list[[2]] = test_MeanDiff_PostHoc(data.df, group, variable, alpha_PostHoc, MeanDiff_results.df = results.df)
     return(results.list)
   }else{
     return(results.df)
