@@ -9,5 +9,3 @@ summary_prop = function(data.df, demo.col){
   }
   return(results.df)
 }
-
-summary_prop_groups
