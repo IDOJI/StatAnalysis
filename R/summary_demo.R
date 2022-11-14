@@ -2,6 +2,7 @@ summary_demo = function(data.df, num.demo.col=NULL, cha.demo.col=NULL, group.col
   # num.demo.col = c("Age", "AHI")
   # char.demo.col = "Sex"
   # group.col = "AHI_groups"
+  # data.df = dataset.df
   if(!is.null(num.demo.col)){
     num.demo_results = summary_mean_pm_sd_groups(data.df, demo.col = num.demo.col, group.col = group.col, group.as.row = group.as.row)
   }else{
