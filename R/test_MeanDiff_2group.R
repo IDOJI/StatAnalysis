@@ -1,4 +1,4 @@
-test_MeanDiff_2group = function(data.df, group, variable, is.normal, is.homo, alpha=0.05, round.digits=100){
+test_MeanDiff_2group = function(data.df, group, variable, is.normal, is.homo, round.digits=100){
   cont_var = data.df[,variable] %>% unlist
   group_var = data.df[,group] %>% unlist %>% as.factor
 
@@ -51,7 +51,7 @@ test_MeanDiff_2group = function(data.df, group, variable, is.normal, is.homo, al
     TestType_MeanDiff = "Welch(Asymptotic)"
   }else if(c5){
     # Mann-Whitney : 정규성X -> 비모수 검정
-    results_MeanDiff = wilcox.test(cont_var~group_var, conf.level=1-alpha)
+    results_MeanDiff = wilcox.test(cont_var~group_var)
     p.val_MeanDiff = round(results_MeanDiff$p.value %>% as.numeric, round.digits)
     TestType_MeanDiff = "Mann-Whitney"
   }
