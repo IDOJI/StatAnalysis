@@ -3,7 +3,9 @@ test_MeanDiff_Export = function(data.df, ith_ANOVA_results, alpha=0.05, alpha_ad
                                 save_path,
                                 excel_file_name){
   ### alpha
-  if(alpha_adj)
+  if(alpha_adj=="Bonferroni"){
+
+  }
 
 
 

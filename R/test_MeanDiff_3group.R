@@ -1,9 +1,4 @@
 test_MeanDiff_3group = function(data.df, group, variable, is.normal, is.homo, round.digits=100){
-  ### alpha correction
-
-
-
-
   ### have na?
   # variable = variables[1]
   group.vec = data.df[,group] %>% unlist
@@ -91,6 +86,7 @@ test_MeanDiff_3group = function(data.df, group, variable, is.normal, is.homo, ro
   }
   results.df = data.frame(MeanDiff_TestType = c(TestType_MeanDiff, rep(" ", n_group-1)),
                           MeanDiff_p.val = c(p.val_MeanDiff, rep(NA, n_group-1)))
+
   if(length(ind_na)>0){
     results.df = rbind(results.df, c(" ", NA))
   }
