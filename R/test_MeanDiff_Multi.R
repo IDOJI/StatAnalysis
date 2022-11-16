@@ -39,21 +39,18 @@ test_MeanDiff_Multi = function(data.df, group, variables, exclude_rows=NULL, ex_
   PostHoc_results.list = lapply(MeanDiff_results.list, data.df, PostHoc, round.digits, alpha_adjusted, alpha_adjusted_posthoc,FUN=function(x, data.df, group, PostHoc, round.digits, alpha_adjusted, alpah_adjusted_posthoc){
     # x=MeanDiff_results.list[[1]]
 
+    results.list = list(x)
+
     # 평균차이의 significancy에 관계없이 다중 검정을 적용 (실험별 오류율)
     if(PostHoc == "All"){
-      results.list = list()
-      results.list[[1]] = x
       results.list[[2]] = test_MeanDiff_PostHoc(MeanDiff_results.df=x, data.df, alpha=alpha_adjusted, round.digits)
     # 평균차이의 significant인 경우만 다중 검정을 적용 (실험별 오류율)
     }else if(PostHoc == "Significant"){
       if(x$MeanDiff_p.val[1] <= alpha_adjusted){
-        results.list = list()
-        results.list[[1]] = x
         results.list[[2]] = test_MeanDiff_PostHoc(MeanDiff_results.df=x, data.df, alpha=alpha_adjusted_posthoc, round.digits)
-      }else{
-        results.list = list(x)
       }
     }
+
     return(results.list)
   })
 
@@ -68,7 +65,7 @@ test_MeanDiff_Multi = function(data.df, group, variables, exclude_rows=NULL, ex_
       y = x[[1]]
       z = x[[2]]
     }else{
-      y = x
+      y = x[[1]]
       z = NULL
     }
     MeanDiff_results.df = data.frame(Response = y$Response[1], Group = strsplit(names(y)[3], split="_")[[1]][2:3] %>% paste(collapse="_"), MeaDiff_TestType = y$MeanDiff_TestType[1], MeaDiff_p.val = y$MeanDiff_p.val[1], MeanDiff_Alpha = alpha_adjusted)
@@ -90,6 +87,7 @@ test_MeanDiff_Multi = function(data.df, group, variables, exclude_rows=NULL, ex_
     }
     names(PostHoc_results.df) = c("PostHoc_TestType", "PostHoc_Groups","PostHoc_p.val", "PostHoc_Alpha")
     final.df = cbind(MeanDiff_results.df, PostHoc_results.df)
+    final.df = change_class(final.df, which.col = "PostHoc_p.val", what.class = "numeric")
     return(final.df)
   })
   Final_results.df = do.call(rbind, Final_results.list)

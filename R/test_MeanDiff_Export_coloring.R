@@ -1,17 +1,4 @@
 test_MeanDiff_Export_coloring = function(MeanDiff_results.df, alpha=0.05, colors.list = "#F781F3", save_path, file_name){
-  # MeanDiff_results.df = gth_MeanDiff[[2]]
-  # file_name = paste(excel_file_name, "PostHoc", sep="_"),
-  # save_path = save_path
-  # alpha=alpha
-  # colors.list=colors.list
-  ### find cols
-  is_this_PostHoc = have_this(names(MeanDiff_results.df), "PostHoc_Groups") %>% length > 0
-  if(is_this_PostHoc){
-    selected_col = which_col(MeanDiff_results.df, "PostHoc_Groups", exact = F, as.col.names = F)
-  }else{
-    selected_col = which_col(MeanDiff_results.df, "Response", exact=T, as.col.names = F)
-  }
-
 
   ### finding pval to color
   which_cols.list = which_col(MeanDiff_results.df, which.col = "p.val") %>% as.list
@@ -49,3 +36,18 @@ test_MeanDiff_Export_coloring = function(MeanDiff_results.df, alpha=0.05, colors
                       save_path = save_path,
                       file_name = file_name)
 }
+
+
+
+# # MeanDiff_results.df = gth_MeanDiff[[2]]
+# # file_name = paste(excel_file_name, "PostHoc", sep="_"),
+# # save_path = save_path
+# # alpha=alpha
+# # colors.list=colors.list
+# ### find cols
+# is_this_PostHoc = have_this(names(MeanDiff_results.df), "PostHoc_Groups") %>% length > 0
+# if(is_this_PostHoc){
+#   selected_col = which_col(MeanDiff_results.df, "PostHoc_Groups", exact = F, as.col.names = F)
+# }else{
+#   selected_col = which_col(MeanDiff_results.df, "Response", exact=T, as.col.names = F)
+# }

@@ -14,8 +14,8 @@ test_MeanDiff_3group = function(data.df, group, variable, is.normal, is.homo, ro
   formula = as_formula(y = group, x = variable)
   n_group = data.df_new[,group] %>% unlist %>% unique %>% length
 
-  is.balanced = table(group_var) %>% as.vector %>% unique %>% length == 1
-  is.large_sample = sum((table(group_var) %>% as.vector)>=30)==n_group
+  is.balanced = table(data.df_new[,group] %>% unlist) %>% as.vector %>% unique %>% length == 1
+  is.large_sample = sum((table(data.df_new[,group] %>% unlist) %>% as.vector)>=30)==n_group
 
 
   #=============================================================================
