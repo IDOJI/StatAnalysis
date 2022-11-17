@@ -1,6 +1,6 @@
 test_MeanDiff_PostHoc = function(MeanDiff_results.df, data.df, alpha=0.05, round.digits=100){
   # MeanDiff_results.df=x
-  group = paste(strsplit(names(MeanDiff_results.df)[3], split="_")[[1]][2:3], collapse="_")
+  group = MeanDiff_results.df$Group[1]
   variable = MeanDiff_results.df$Response[1]
 
   group_var = data.df[,group] %>% unlist
@@ -86,7 +86,7 @@ test_MeanDiff_PostHoc = function(MeanDiff_results.df, data.df, alpha=0.05, round
   ### Return
   ##############################################################################
   names(PH.df)[c(1:2,4)] = c("PostHoc_TestType", "PostHoc_Groups", "p.val")
-  PH.df = cbind(c(group, rep(" ", nrow(PH.df)-1)), PH.df)
-  names(PH.df)[1] = "Groups(Trt)"
+  PH.df = cbind(c(group, rep(" ", nrow(PH.df)-1)), c(variable, rep(" ", nrow(PH.df)-1)),PH.df)
+  names(PH.df)[1:2] = c("Groups(Trt)", "Response")
   return(PH.df)
 }

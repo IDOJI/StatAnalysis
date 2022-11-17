@@ -11,7 +11,8 @@ test_MeanDiff_3group = function(data.df, group, variable, is.normal, is.homo, ro
   }
 
 
-  formula = as_formula(y = group, x = variable)
+
+  formula = as_formula(y = variable, x = group)
   n_group = data.df_new[,group] %>% unlist %>% unique %>% length
 
   is.balanced = table(data.df_new[,group] %>% unlist) %>% as.vector %>% unique %>% length == 1

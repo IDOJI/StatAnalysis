@@ -1,4 +1,4 @@
-as_list_by = function(data.df, which.ID.col, arrange.by=NULL, is.date=F, desc=T, messaging=T){
+as_list_by = function(data.df, which.ID.col, factor.levels=NULL, arrange.by=NULL, is.date=F, desc=T, messaging=T){
   # data.df = data.df_new
   # which.ID.col = group
 
@@ -12,7 +12,12 @@ as_list_by = function(data.df, which.ID.col, arrange.by=NULL, is.date=F, desc=T,
     }
   }
   ### Extract ID
-  ID = data.df[,which.ID.col] %>% unlist %>% as.factor
+  if(is.null(factor.levels)){
+    ID = data.df[,which.ID.col] %>% unlist %>% factor
+  }else{
+    ID = data.df[,which.ID.col] %>% unlist %>% factor(levels=factor.levels)
+  }
+
 
   if(class(ID)=="list"){
     ID = unlist(ID)
@@ -20,7 +25,7 @@ as_list_by = function(data.df, which.ID.col, arrange.by=NULL, is.date=F, desc=T,
   if(!is.null(dim(ID))){
     stop("Selected ID columns are more than one.")
   }else{
-    ID_unique = unique(ID)
+    ID_unique = levels(ID)
   }
   ### lapply
   data.list = lapply(ID_unique, data.df, which.ID.col, arrange.by, is.date, desc, FUN=function(x, data.df=data.df, which.ID.col=which.ID.col, arrange.by=arrange.by, is.date=is.date, desc=desc){

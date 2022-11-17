@@ -1,6 +1,7 @@
 test_Group_Normality_and_Homoscedasticity = function(data.df, group, variable, alpha=0.05){
   # variable = variables[1]
   ### have na?
+
   group.vec = data.df[,group] %>% unlist
   if(is.na(group.vec) %>% sum > 0){
     data.df_new = data.df[!is.na(group.vec),]
@@ -14,7 +15,7 @@ test_Group_Normality_and_Homoscedasticity = function(data.df, group, variable, a
   ### group
   group.list = as_list_by(data.df_new, group, messaging = F)
   results_group.df = names(group.list) %>% data.frame
-  names(results_group.df) = paste("Group", group, sep="_")
+  names(results_group.df) = paste("Group_Var", group, sep=" : ")
 
 
   ### cont variable of each group

@@ -18,6 +18,7 @@ test_MeanDiff = function(data.df,
     data.df = data.df[-exclude_rows,]
   }
 
+
   ### Normality & Homoscedasticity
   results_NormHomo.df = test_Group_Normality_and_Homoscedasticity(data.df, group, variable, alpha=alpha)
 
@@ -61,6 +62,7 @@ test_MeanDiff = function(data.df,
   ### Adding response & groups
   final_results = cbind(Response=response_col_1,
                         Excluded_Group_Rows=excluded.vec,
+                        Group=c(group, rep(" ", n_group-1)),
                         results_NormHomo.df,
                         results_MeanDiff) %>% as.data.frame
   return(final_results)

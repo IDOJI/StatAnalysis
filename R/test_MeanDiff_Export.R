@@ -14,10 +14,10 @@ test_MeanDiff_Export = function(ANOVA_results.list,
   #=============================================================================
   # Exporting Colored excels
   #=============================================================================
-  which_MeanDiff_sig = which(ANOVA_results$MeaDiff_p.val<=alpha_adjusted)
+  which_MeanDiff_sig = which(ANOVA_results$MeanDiff_p.val<=alpha_adjusted)
   which_PostHoc_sig = which(ANOVA_results$PostHoc_p.val<=alpha_adjusted_posthoc)
   colors.list = list("red", "#F7FE2E", "#FE9A2E", "#F7FE2E")
-  which_cols.list = which_cols(ANOVA_results, which.cols=c("Response", "MeaDiff_p.val", "PostHoc_Groups", "PostHoc_p.val")) %>% as.list
+  which_cols.list = which_cols(ANOVA_results, which.cols=c("Response", "MeanDiff_p.val", "PostHoc_Groups", "PostHoc_p.val")) %>% as.list
   coloring_index.list = list(which_MeanDiff_sig, which_MeanDiff_sig, which_PostHoc_sig, which_PostHoc_sig)
   coloring_xlsx_cells(ANOVA_results, colors.list, which_cols.list, coloring_index.list, save_path, file.name)
 
