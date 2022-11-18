@@ -1,4 +1,4 @@
-test_MeanDiff_PostHoc_games.howell <- function(grp, obs) {
+test_MeanDiff_PostHoc_games.howell <- function(grp, obs, alpha) {
   # The Games-Howell test is more flexible
   # than other nonparametric approaches
   # such as Tukey’s test
@@ -40,12 +40,12 @@ test_MeanDiff_PostHoc_games.howell <- function(grp, obs) {
 
     # Upper Confidence Limit
     upper.conf <- lapply(1:ncol(combs), function(x) {
-      mean.diff + qtukey(p = 0.95, nmeans = groups, df = df) * se
+      mean.diff + qtukey(p = 1-alpha, nmeans = groups, df = df) * se
     })[[1]]
 
     # Lower Confidence Limit
     lower.conf <- lapply(1:ncol(combs), function(x) {
-      mean.diff - qtukey(p = 0.95, nmeans = groups, df = df) * se
+      mean.diff - qtukey(p = 1-alpha, nmeans = groups, df = df) * se
     })[[1]]
 
     # Group Combinations

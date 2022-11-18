@@ -5,21 +5,41 @@ test_MeanDiff_Export = function(ANOVA_results.list,
   # Dividing each element
   #=============================================================================
   ANOVA_results = ANOVA_results.list[[1]]
-  alpha = ANOVA_results.list[[2]]
-  alpha_adjusted = ANOVA_results.list[[3]]
-  alpha_adjusted_posthoc = ANOVA_results.list[[4]]
-
+  alpha_adjusted = ANOVA_results$Sig.Levels[2] %>% as.numeric
+  alpha_adjusted_posthoc = ANOVA_results$Sig.Levels[5] %>% as.numeric
+  nrows_for_merging.list = ANOVA_results.list[[2]]
 
 
   #=============================================================================
   # Exporting Colored excels
   #=============================================================================
+  is.sig.MeanDiff = sum(ANOVA_results$MeanDiff_p.val %>% as.numeric %>% exclude_na < alpha_adjusted)>0
+  is.sig.PostHoc = sum(ANOVA_results$PostHoc_p.val %>% as.numeric %>% exclude_na < alpha_adjusted)>0
+
   which_MeanDiff_sig = which(ANOVA_results$MeanDiff_p.val<=alpha_adjusted)
-  which_PostHoc_sig = which(ANOVA_results$PostHoc_p.val<=alpha_adjusted_posthoc)
-  colors.list = list("red", "#F7FE2E", "#FE9A2E", "#F7FE2E")
-  which_cols.list = which_cols(ANOVA_results, which.cols=c("Response", "MeanDiff_p.val", "PostHoc_Groups", "PostHoc_p.val")) %>% as.list
-  coloring_index.list = list(which_MeanDiff_sig, which_MeanDiff_sig, which_PostHoc_sig, which_PostHoc_sig)
-  coloring_xlsx_cells(ANOVA_results, colors.list, which_cols.list, coloring_index.list, save_path, file.name)
+  if(is.sig.MeanDiff && !is.sig.PostHoc){
+    colors.list = list("#F7FE2E","#F7FE2E")
+    coloring_index.list = list(which_MeanDiff_sig, which_MeanDiff_sig)
+    which_cols.list = which_cols(ANOVA_results, which.cols=c("Response", "MeanDiff_p.val")) %>% as.list
+  }else if(is.sig.MeanDiff && is.sig.PostHoc){
+    which_PostHoc_sig = which(ANOVA_results$PostHoc_p.val<=alpha_adjusted_posthoc)
+    colors.list = list("#F7FE2E","#F7FE2E", "#FE9A2E","#FE9A2E", "#FE9A2E")
+    coloring_index.list = list(which_MeanDiff_sig, which_MeanDiff_sig, which_MeanDiff_sig, which_PostHoc_sig, which_PostHoc_sig)
+    which_cols.list = which_cols(ANOVA_results, which.cols=c("Response", "MeanDiff_p.val", "Overall Difference", "Which pairs showed difference(Highlighted)", "PostHoc_p.val")) %>% as.list
+  }else{
+    colors.list = NULL
+  }
+
+
+  # 보류
+  merging_cols.list = list("Response", "MeanDiff_TestType", "MeanDiff_p.val", "PostHoc_TestType", "Overall Difference")
+  merging_rows.list = nrows_for_merging.list
+
+  ### Exporting
+  if(!is.null(colors.list)){
+    coloring_xlsx_cells(ANOVA_results, colors.list, which_cols.list, coloring_index.list, save_path = path, file_name = file.name)
+  }
+
 
 
 

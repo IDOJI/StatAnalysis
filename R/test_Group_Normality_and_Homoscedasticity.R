@@ -15,7 +15,7 @@ test_Group_Normality_and_Homoscedasticity = function(data.df, group, variable, a
   ### group
   group.list = as_list_by(data.df_new, group, messaging = F)
   results_group.df = names(group.list) %>% data.frame
-  names(results_group.df) = paste("Group_Var", group, sep=" : ")
+  names(results_group.df) = paste("Group", group, sep=" : ")
 
 
   ### cont variable of each group

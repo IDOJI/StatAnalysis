@@ -16,5 +16,9 @@ test_Chronbach = function(data.df, questions_section_unit=6, section.names, path
   if(!is.null(path)){
     write.csv(chronbach_results.df, file = paste(path, "Chronbach Alphas.csv", sep="/"))
   }
-  return(chronbach_results.df)
+
+  results.df = data.frame(Sections=rownames(chronbach_results.df),chronbach_results.df)[,-2]
+  names(results.df)[1:3] = c("Questionnaire", "Num.of.Items", "Chronbach.Alpha")
+  rownames(results.df) = NULL
+  return(results.df)
 }

@@ -64,7 +64,7 @@ test_MeanDiff_PostHoc = function(MeanDiff_results.df, data.df, alpha=0.05, round
     # Games-Howell :
     # no equal sample size needed, works even with
     # heteroscedastic data
-    PH = test_MeanDiff_PostHoc_games.howell(group_var, cont_var)
+    PH = test_MeanDiff_PostHoc_games.howell(group_var, cont_var, alpha)
     p.val = PH$p.val
     PH$p.val = NULL
     PH.df = cbind(c("Games-Howell", rep(" ", nrow(PH)-1)), PH, p.val=p.val) %>% as.data.frame

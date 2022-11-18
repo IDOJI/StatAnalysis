@@ -9,7 +9,7 @@ test_MeanDiff = function(data.df,
   # group = "Years"
   # group = "Ethnicity"
   # variable = "WELLNESS"
-  # variable = variables[1]
+  # variable = x
 
   ### exclude some rows
   # ex_reasons = "Small Sample Size"
