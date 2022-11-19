@@ -1,9 +1,15 @@
 as_list_by = function(data.df, which.ID.col, factor.levels=NULL, arrange.by=NULL, is.date=F, desc=T, messaging=T){
-  # data.df = data.df_new
-  # which.ID.col = group
+  ### EXclude NA
+  which_NA = data.df[,which.ID.col] %>% unlist %>% is.na %>% which
+  if(length(which_NA)>0){
+    data.df = data.df[-which_NA,]
+    data.df_NA = data.df[which_NA,]
+  }else{
+    which_NA = NULL
+    data.df_NA = NULL
+  }
 
-  # as_list_by(subjects.list[[1]], "Image_ID")
-  # which.ID.col = "Gender"
+
   ### argument : arrange.by
   if(!is.null(arrange.by)){
     col.names = names(data.df)
@@ -59,5 +65,5 @@ as_list_by = function(data.df, which.ID.col, factor.levels=NULL, arrange.by=NULL
     }
   })
   names(data.list) = ID_unique
-  return(data.list)
+  return(list(data.list, NA_rows=list(which_NA, data.df_NA)))
 }

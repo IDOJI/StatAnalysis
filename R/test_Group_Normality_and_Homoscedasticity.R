@@ -1,61 +1,37 @@
-test_Group_Normality_and_Homoscedasticity = function(data.df, group, variable, alpha=0.05){
-  # variable = variables[1]
-  ### have na?
-
-  group.vec = data.df[,group] %>% unlist
-  if(is.na(group.vec) %>% sum > 0){
-    data.df_new = data.df[!is.na(group.vec),]
-    ind_na = which(is.na(group.vec))
-    NA_ind = paste("NA", paste("(", paste(ind_na, collapse=","), ")", sep=""), sep="")
+test_Group_Normality_and_Homoscedasticity = function(X, group, variable, alpha=0.05){
+  ### 0) Exclude NA case =============================================================
+  which_na = X[,group] %>% unlist %>% is.na %>% which
+  if(length(which_na)>0){
+    X_new = X[-which_na, ]
+    X_na = X[which_na, ]
   }else{
-    data.df_new = data.df
-    NA_ind = NULL
-  }
-
-  ### group
-  group.list = as_list_by(data.df_new, group, messaging = F)
-  results_group.df = names(group.list) %>% data.frame
-  names(results_group.df) = paste("Group", group, sep=" : ")
-
-
-  ### cont variable of each group
-  x.list = list()
-  for(i in 1:length(group.list)){
-    # i=1
-    x.list[[i]] = group.list[[i]][,variable] %>% as.vector %>% unlist
+    X_new = X
+    which_na = NULL
+    X_na = NULL
   }
 
 
-  ### 1) Normality
-  norm.list = list()
-  for(n in 1:length(x.list)){
-    norm.list[[n]] = test_Normality(x.list[[n]])
-  }
-  results_norm.df = do.call(rbind, norm.list)
+  ### 1) Normality =============================================================
+  norm.list = test_Normality(X_new, group, variable, alpha)
 
-  ### 2) Homoscedasticity
-  homo.df = test_Homoscedasticity(data.df_new, group, variable, alpha, Norm_p.val = results_norm.df$Normality_p.val)
-  add_na = matrix(NA, nrow(results_norm.df)-nrow(homo.df), ncol(homo.df)) %>% as.data.frame
-  names(add_na) = names(homo.df)
-  results_homo.df = rbind(homo.df, add_na)
+  ### 2) Homoscedasticity =============================================================
+  homo.df = test_Homoscedasticity(X_new, group, variable, alpha, is.normal = norm.list[[2]])
 
+  ### 3) Combining results =============================================================
+  results.df = ccbind(X = norm.list[[1]], Y = homo.df)
 
-  ### return results
-  if(!is.null(NA_ind)){
-    results.df = cbind(results_group.df, results_norm.df, results_homo.df)
-    na_row = c(NA_ind, rep(NA, ncol(results.df)-1))
-    results.df = rbind(results.df, na_row)
-  }else{
-    results.df = cbind(results_group.df, results_norm.df, results_homo.df)
-  }
-
-  ### as numeric p.val
-  p.val_col = which_col(results.df, which.col = "_p.val")
-  for(i in 1:length(p.val_col)){
-    # i=1
-    results.df[,p.val_col[i]] = as.numeric(results.df[,p.val_col[i]]) %>% suppressWarnings()
-  }
-
-  return(results.df)
+  return(list(results.df, is.norm=norm.list$is.normal, is.balanced=norm.list$is.balanced, is.homo=homo.df$is.EqualVar, list(which_na, X_na)))
 }
 
+
+
+# ### have na?
+# group.vec = data.df[,group] %>% unlist
+# if(is.na(group.vec) %>% sum > 0){
+#   data.df_new = data.df[!is.na(group.vec),]
+#   ind_na = which(is.na(group.vec))
+#   NA_ind = paste("NA", paste("(", paste(ind_na, collapse=","), ")", sep=""), sep="")
+# }else{
+#   data.df_new = data.df
+#   NA_ind = NULL
+# }
