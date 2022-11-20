@@ -12,9 +12,6 @@ test_Homoscedasticity = function(X, group, variable, alpha=0.05, is.normal=T){
 
 
 
-
-
-
   ### 정규성 O =================================================================
   if(is.normal){
     ### F-test : 정규성 O, 2그룹
@@ -30,7 +27,7 @@ test_Homoscedasticity = function(X, group, variable, alpha=0.05, is.normal=T){
   }else{
     sample_size = sapply(X.list, length)>30
     ### Levene : 정규성 X, 대표본 (30이상)
-    if(sum(sample_size)==length(x.list)){
+    if(sum(sample_size)==length(X.list)){
       results = car::leveneTest(y=X[,variable] %>% unlist, group=X[,group] %>% unlist)
       results.df = data.frame("Levene", results$`Pr(>F)`[1])
     ### Fligner-Killeen : 정규성X, 소표본 (30미만) -> 비모수적방법
