@@ -1,14 +1,15 @@
-test_MeanDiff_Multi = function(dataset.df, alpha, posthoc_alpha, variables, group_variables, group_filenames, path, p.adjust.method="bonferroni", file_name = "MeanDiff"){
+test_MeanDiff_Multi = function(dataset.df, norm_alpha=0.05, anova_alpha ,posthoc_alpha, variables, group_variables, group_filenames, path, p.adjust.method="bonferroni", file_name = "MeanDiff"){
   MeanDiff_results.list = lapply(group_variables, FUN=function(g, ...){
     # g = group_variables[1]
     f = group_filenames[which(g==group_variables)]
     Final.list = lapply(variables, FUN=function(v, ...){
       title = paste(v, "by", g,sep=" ")
-      filename = paste(f, "_", v, ".png", sep="")
+      filename = paste(v, "_", f, ".png", sep="")
       test_MeanDiff(X                 =    dataset.df,
                     group             =    g,
                     variable          =    v,
-                    alpha             =    alpha,
+                    norm_alpha        =    norm_alpha,
+                    anova_alpha       =    anova_alpha,
                     posthoc_alpha     =    posthoc_alpha,
                     p.adjust.method   =    p.adjust.method,
                     title             =    title,
@@ -39,7 +40,7 @@ test_MeanDiff_Multi = function(dataset.df, alpha, posthoc_alpha, variables, grou
 
 
   ### highlighting
-  which_meandiff_sig = which(MeanDiff.df$MeanDiff_p.val <= alpha)
+  which_meandiff_sig = which(MeanDiff.df$MeanDiff_p.val <= anova_alpha)
   which_posthoc_sig = which(MeanDiff.df$PostHoc_p.val <= posthoc_alpha)
   coloring_index.list = c(rep(list(which_meandiff_sig),3),
                           rep(list(which_posthoc_sig),3))
@@ -54,4 +55,7 @@ test_MeanDiff_Multi = function(dataset.df, alpha, posthoc_alpha, variables, grou
                       save_path = path,
                       file_name = file_name) %>% suppressWarnings
 
+
+
+  return(MeanDiff.df)
 }

@@ -1,6 +1,6 @@
 summary_demo = function(data.df, num.demo.col=NULL, cha.demo.col=NULL, group.col=NULL, group.as.row=F, path=NULL, file.name=NULL){
   # num.demo.col = c("Age", "AHI")
-  # char.demo.col = "Sex"
+  # cha.demo.col = "Sex"
   # group.col = "AHI_groups"
   # data.df = dataset.df
   if(!is.null(num.demo.col)){

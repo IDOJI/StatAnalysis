@@ -2,7 +2,8 @@ test_MeanDiff = function(X,
                      group,
                      variable,
                      round.digits=100,
-                     alpha=0.05,
+                     norm_alpha=0.05,
+                     anova_alpha=0.05,
                      posthoc_alpha=0.05,
                      p.adjust.method = c("bonferroni", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"),
                      outlier.label=NULL,
@@ -15,7 +16,7 @@ test_MeanDiff = function(X,
   #============================================================================
   # Normality & Homoscedasticity
   #============================================================================
-  results_NormHomo.list = test_Group_Normality_and_Homoscedasticity(X, group, variable, alpha)
+  results_NormHomo.list = test_Group_Normality_and_Homoscedasticity(X, group, variable, norm_alpha)
   is.normal = results_NormHomo.list$is.norm
   is.homo = results_NormHomo.list$is.homo
   is.balanced = results_NormHomo.list$is.balanced
@@ -77,7 +78,7 @@ test_MeanDiff = function(X,
       pairwise.annotation = "p.value",                # how do you want to annotate the pairwise comparisons
       p.adjust.method = p.adjust.method,              # method for adjusting p-values for multiple comparisons
       pairwise.display = "significant",
-      conf.level = 1-alpha,
+      conf.level = 1-anova_alpha,
 
 
 
@@ -144,9 +145,11 @@ test_MeanDiff = function(X,
       #   #                               size = 1,
       #   #                               annotations = c("***")) %>% suppressWarnings()
       # }
+      if(M_results.df$MeanDiff_p.val[1] <= anova_alpha){
+        # Saving images
+        ggplot2::ggsave(filename = filename, plot = p, path = path, units="px", dpi = 300, limitsize = F)
+      }
 
-      # Saving images
-      ggplot2::ggsave(filename = filename, plot = p, path = path, units="px", dpi = 300, limitsize = F)
     }
 
 
@@ -162,6 +165,7 @@ test_MeanDiff = function(X,
   final.df = ccbind(results_NormHomo.list[[1]], MeanDiff.df)
   return(final.df)
 }
+
 
 
 

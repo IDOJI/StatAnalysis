@@ -8,10 +8,10 @@ summary_mean_pm_sd_groups = function(data.df, demo.col, group.col=NULL, group.as
     mean_pm_sd_results = summary_mean_pm_sd(data.df, demo.col)
     return(mean_pm_sd_results)
   }else{
-    group.list = as_list_by(data.df, group.col)
+    group.list = as_list_by(data.df, group.col)[[1]]
     n_group = length(group.list)
 
-    mean_pm_sd_results.list= lapply(group.list, demo.col, group.as.row, FUN=function(x, demo.col=demo.col, group.as.row=group.as.row){
+    mean_pm_sd_results.list= lapply(group.list, demo.col, group.as.row, FUN=function(x, ...){
       # x = group.list[[1]]
 
       x_results = summary_mean_pm_sd(x, demo.col)

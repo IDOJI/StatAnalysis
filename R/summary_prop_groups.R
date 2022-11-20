@@ -8,7 +8,7 @@ summary_prop_groups = function(data.df, demo.col, group.col=NULL, group.as.row=F
     summary_prop_results.df = summary_prop(data.df, demo.col)
     return(summary_prop_results.df)
   }else{
-    group.list = as_list_by(data.df, group.col)
+    group.list = as_list_by(data.df, group.col)[[]]
 
     summary_prop_results.list= lapply(group.list, demo.col, group.as.row, FUN=function(x, demo.col=demo.col, group.as.row=group.as.row){
       # x = group.list[[1]]
