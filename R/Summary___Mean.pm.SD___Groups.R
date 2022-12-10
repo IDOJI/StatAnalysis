@@ -1,11 +1,11 @@
-summary_mean_pm_sd_groups = function(data.df, demo.col, group.col=NULL, group.as.row=F){
+Summary___Mean.pm.SD___Groups = function(data.df, demo.col, group.col=NULL, group.as.row=F){
   # demo.col = c("Age","AHI")
   # data.df = Data_Grouping_2.df
   # group.col = "AHI_group"
 
   if(is.null(group.col)){
     # mean_pm_sd
-    mean_pm_sd_results = summary_mean_pm_sd(data.df, demo.col)
+    mean_pm_sd_results = Summary___Mean.pm.SD(data.df, demo.col)
     return(mean_pm_sd_results)
   }else{
     group.list = as_list_by(data.df, group.col)[[1]]
@@ -14,7 +14,7 @@ summary_mean_pm_sd_groups = function(data.df, demo.col, group.col=NULL, group.as
     mean_pm_sd_results.list= lapply(group.list, demo.col, group.as.row, FUN=function(x, ...){
       # x = group.list[[1]]
 
-      x_results = summary_mean_pm_sd(x, demo.col)
+      x_results = Summary___Mean.pm.SD(x, demo.col)
 
       if(group.as.row){
         x_results.df = matrix(NA, 1, length(demo.col)) %>% as.data.frame

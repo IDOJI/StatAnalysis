@@ -1,4 +1,4 @@
-Plotting_Correlation = function(data.df, x, y, group=NULL, group.levels=NULL, method=c("pearson", "spearman"), alpha=0.05, path=NULL, file.name=NULL){
+Plot___Correlation = function(data.df, x, y, group=NULL, group.levels=NULL, method=c("pearson", "spearman"), alpha=0.05, path=NULL, file.name=NULL){
   # x=selected_x[15]
   # y=selected_y[4]
 
@@ -44,5 +44,5 @@ Plotting_Correlation = function(data.df, x, y, group=NULL, group.levels=NULL, me
   p = p + stat_cor(mapping=aes(x=x,y=y), data=data.df, cor.coef.name="r", method = method,
                    size=10, inherit.aes=F, r.digits = 4, p.digits = 4, p.accuracy = alpha, color=lm_colour)
 
-  ggsave(paste(file.name, ".png", sep=""), p, path = path)
+  ggsave(paste(file.name, ".png", sep=""), p, path = path, limitsize = T)
 }

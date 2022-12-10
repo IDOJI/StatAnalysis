@@ -1,4 +1,4 @@
-Quest_InvCoding = function(data.df, which.col=c(2,5,6), score=c("1","2.25","3.5","4.75","6")){
+Survey___Inverse.Coding = function(data.df, which.col=c(2,5,6), score=c("1","2.25","3.5","4.75","6")){
   # data.df = dataset_ExNA[,first:(first+35)]
   score = as.character(score)
   which_ind.list = list()

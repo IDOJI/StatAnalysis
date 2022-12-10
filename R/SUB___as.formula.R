@@ -1,4 +1,4 @@
-as_formula = function(y, x){
+SUB___as.formula = function(y, x){
   if(length(y)>1){
     stop("'y' should have one element.")
   }

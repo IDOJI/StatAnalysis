@@ -1,4 +1,4 @@
-summary_mean_pm_sd = function(data.df, demo.col){
+Summary___Mean.pm.SD = function(data.df, demo.col){
   pm_results = c()
   for(i in 1:length(demo.col)){
     # i=1

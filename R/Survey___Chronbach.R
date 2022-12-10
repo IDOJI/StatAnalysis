@@ -1,4 +1,4 @@
-test_Chronbach = function(data.df, questions_section_unit=6, section.names, path=NULL){
+Test___Chronbach = function(data.df, questions_section_unit=6, section.names, path=NULL){
   # questions_section_unit=6 : 1~6까지 한 묶음, 7~12까지 한 묶음으로 간주
 
   if(ncol(data.df)%%questions_section_unit!=0){

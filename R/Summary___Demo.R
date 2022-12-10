@@ -1,4 +1,4 @@
-summary_demo = function(data.df, num.demo.col=NULL, cha.demo.col=NULL, group.col=NULL, group.as.row=F, path=NULL, file.name=NULL){
+Summary___Demo = function(data.df, num.demo.col=NULL, cha.demo.col=NULL, group.col=NULL, group.as.row=F, path=NULL, file.name=NULL){
   # num.demo.col = c("Age", "AHI")
   # cha.demo.col = "Sex"
   # group.col = "AHI_groups"
