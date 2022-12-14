@@ -6,6 +6,7 @@ Test___Normality = function(x.vec, alpha=0.05){
   if(n<4){
     results.list[[1]] = "Small Sample"
     results.list[[2]] = "Nonparametric needed"
+    results.list[[3]] = 0
   }else if(n < 5000){
     results.list[[1]] = shapiro.test(x.vec)
     results.list[[2]] = "Shapiro-Wilk"

@@ -1,4 +1,4 @@
-SUB___p.vals_signif_stars = function(p.vals){
+SUB___P.vals.Signif.Stars = function(p.vals){
   p.vals.signif = sapply(p.vals, FUN=function(p){
     if(p <= 0.0001){
       return("****")

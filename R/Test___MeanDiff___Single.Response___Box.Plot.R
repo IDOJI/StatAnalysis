@@ -1,12 +1,20 @@
-Test___MeanDiff___Single.Response___Box.Plot = function(df, var_group, var_response, Mean.Diff.Results, alpha_PostHoc){
+Test___MeanDiff___Single.Response___Box.Plot = function(df, var_group, var_response, Mean.Diff.Results, alpha_ANOVA=NULL, alpha_PostHoc=NULL, palette="lancet"){
   ############################################################################
   # Finding significant comparing groups
   ############################################################################
   Mean.Diff = Mean.Diff.Results[[1]]
-  Post.Hoc  = Mean.Diff.Results[[2]]
+  which_signif = which(unlist(Mean.Diff$MeanDiff_p.value) <= alpha_ANOVA)
+  Mean.Diff_Signif = Mean.Diff[which_signif, ]
+  names(Mean.Diff_Signif)
 
-  Post.Hoc_Signif = Post.Hoc[Post.Hoc$PostHoc_p.value_adj <= alpha_PostHoc, ]
-  Post.Hoc_Signif_tibble = Post.Hoc_Signif %>% dplyr::select(group1, group2, PostHoc_p.value_adj, PostHoc_p.value.signif)
+  Post.Hoc  = Mean.Diff.Results[[2]]
+  if(!is.null(Post.Hoc)){
+    Post.Hoc_Signif = Post.Hoc[Post.Hoc$PostHoc_p.value_adj <= alpha_PostHoc, ]
+    Post.Hoc_Signif_tibble = Post.Hoc_Signif %>% dplyr::select(group1, group2, PostHoc_p.value_adj, PostHoc_p.value.signif)
+  }
+
+
+
 
 
 
@@ -17,18 +25,66 @@ Test___MeanDiff___Single.Response___Box.Plot = function(df, var_group, var_respo
                          x = var_group,
                          y = var_response,
                          color = var_group,
+                         palette = "lancet",
+                         shape = var_group,
+                         size = 0.3,
                          add = "jitter",
-                         shape = var_group)
+                         add.params = list(size=0.5))
+
+
+
+
+  ############################################################################
+  # Label bold
+  ############################################################################
+  p2 = p1 + ggpubr::font("xlab", size = 18, face = "bold") + ggpubr::font("ylab", size = 18, face = "bold")
+
+
 
 
   ############################################################################
   # Adding p-values on comparing groups
   ############################################################################
-  p2 = p1 + ggpubr::stat_pvalue_manual(Post.Hoc_Signif_tibble,
-                                       y.position = max(df[,var_response] %>% unlist %>% as.numeric),
-                                       step.increase = 0.1,
-                                       label = "PostHoc_p.value.signif")
-  return(p2)
+  if(is.null(Post.Hoc) && nrow(Mean.Diff_Signif)>0){
+    # 두 그룹 사이의 비교 옵션 넣기
+    group = df[,var_group] %>% unique %>% unlist
+    Mean.Diff_Signif$group1 = group[1]
+    Mean.Diff_Signif$group2 = group[2]
+
+    p3 = p2 + ggpubr::stat_pvalue_manual(Mean.Diff_Signif,
+                                         y.position = 1.1*max(df[,var_response] %>% unlist %>% as.numeric),
+                                         step.increase = 0.1,
+                                         label = "MeanDiff_p.value.signif",
+                                         label.size = 5,
+                                         bracket.size = 0.8)
+  }else{
+    p3 = p2 + ggpubr::stat_pvalue_manual(Post.Hoc_Signif_tibble,
+                                         y.position = 1.1*max(df[,var_response] %>% unlist %>% as.numeric),
+                                         step.increase = 0.1,
+                                         label = "PostHoc_p.value.signif",
+                                         label.size = 5,
+                                         bracket.size = 0.8)
+  }
+
+
+
+
+  ############################################################################
+  # Adding sample size
+  ############################################################################
+  p4 = p3 + EnvStats::stat_n_text(text.box = F, size = 4)
+
+
+
+
+  ############################################################################
+  # Change font size
+  ############################################################################
+  p5 = p4 + theme(text = element_text(size = 10)) # change text size of theme components
+
+
+  #ggsave("test.png", plot = p5, path = path)
+  return(p5)
 }
 
 #
@@ -39,7 +95,7 @@ Test___MeanDiff___Single.Response___Box.Plot = function(df, var_group, var_respo
 #                        x       = var_group,
 #                        y       = var_response,
 #                        color   = var_group,
-#                        #palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+#                        #palette = ,
 #                        add     = "jitter",
 #                        shape   = var_group)
 
@@ -108,3 +164,18 @@ Test___MeanDiff___Single.Response___Box.Plot = function(df, var_group, var_respo
 #     MeanDiff.df = M_results.df
 #   }
 #
+
+# ############################################################################
+# # Palette
+# ############################################################################
+#
+# Plot___N.Palette = function(n){
+#   if(n==3){
+#     palette = c("#00AFBB", "#E7B800", "#FC4E07")
+#   }if(n==4){
+#     palette = c("#00AFBB", "#E7B800", "#FC4E07", )
+#   }else{
+#     palette = NULL
+#   }
+#   return(palette)
+# }

@@ -4,14 +4,14 @@ Test___MeanDiff___Single.Response___ggstats = function(# data & variables
                                                     var_response,
                                                     alpha_ANOVA,
                                                     # test results
-                                                    is.normal,
-                                                    is.homo,
+                                                    is.Normal,
+                                                    is.Equal.Var,
                                                     # plotting options
                                                     results.subtitle=F,
-                                                    pairwise.comparisons=F,
+                                                    pairwise.comparisons=T,
                                                     p.adjust.method,
-                                                    title){
-  if(is.normal){
+                                                    title=""){
+  if(is.Normal){
     type = "parametric"
   }else{
     type = "nonparametric"
@@ -28,7 +28,7 @@ Test___MeanDiff___Single.Response___ggstats = function(# data & variables
 
     # test type @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     type = type,                                    # which type of test is to be run
-    var.equal = is.homo,
+    var.equal = is.Equal.Var,
 
 
     # outlier & mean @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -65,6 +65,7 @@ Test___MeanDiff___Single.Response___ggstats = function(# data & variables
     # returning statistical results  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     results.subtitle=results.subtitle                           #  Setting it to FALSE will return only the plot.
   )
+
   return(p)
 }
 

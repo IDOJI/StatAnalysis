@@ -1,4 +1,4 @@
-Test___Correaltion_Plotting = function(data.df, cols=NULL, path, file.name){
+Test___Corr___Plotting.Matrix = function(data.df, cols=NULL, path, file.name){
 
   if(!is.null(cols)){
     data.df = data.df[,cols]

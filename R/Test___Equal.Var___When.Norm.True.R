@@ -1,4 +1,4 @@
-test___Equal.Var___When.Norm.True = function(df, var_response, var_group, is.normal, alpha){
+Test___Equal.Var___When.Norm.True = function(df, var_response, var_group, is.normal, alpha){
   data.list = as_list_by(df, var_group)
 
   results.list = list(NA, NA, NA, NA)

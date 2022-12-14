@@ -1,25 +1,32 @@
-test_Corr___Multi = function(data.df, X, Y, group=NULL, method=c("pearson", "kendall", "spearman"),alpha=0.05, path, filename="Correlation Results"){
-  results.list_2 = lapply(X, FUN=function(x, ...){
-    # x= X[1]
-    results.list_1 = lapply(Y, FUN=function(y,...){
-      # y=Y[1]
-      file_name = paste("[",y,"]", "_","[", x,"]", sep="")
-      return(test_Corr(data.df, x, y, method, alpha, group, path, filename=file_name))
+Test___Corr___Multi = function(data.df, X, Y, group=NULL,
+                               method=c("pearson", "kendall", "spearman"),
+                               alpha=0.05,
+                               save.path,
+                               expression=F){
+  ### create path
+  dir.create(save.path, showWarnings = F)
+
+
+  ### Extracting & Plotting results
+  results.list_2 = lapply(Y, FUN=function(y, ...){
+    results.list_1 = lapply(X, FUN=function(x,...){
+      file.name = paste0("[", "Correlation","]","`",x,"`", "_","`", y,"`")
+      return(Test___Corr(data.df, x, y, group, method, alpha, save.path, file.name, expression))
 
     })
     return(do.call(rbind, results.list_1))
   })
-  results.df = do.call(rbind, results.list_2)
 
 
-  ### exporting
-  Export___xlsx___Highlighting(results.df,
-                      colors.list = list("#2E9AFE", "#81F781", "yellow"),
-                      which_cols.list = which_cols(results.df, c("X", "Y", "p.val")) %>% as.list,
-                      coloring_index.list = rep(list(which(results.df$Significant=="*")),3),
-                      save_path = path,
-                      file_name = filename)
+
+  #=========================================================================여기까지 정리 완료
+  ### exporting exch xlsx
+  lapply(results.list_2, FUN=function(ith.df, ...){
+    # ith.df = results.list_2[[1]]
+    filename = paste0("[", "Correlation Test","] ", "x", "  vs  ", "`", unique(ith.df$y), "`")
+    Test___Corr___Exporting.XLSX.Highlight(Corr.Test_results.df = ith.df, alpha, save.path, filename)
+  })
 
 
-  return(results.df)
+  return(results.list_2)
 }

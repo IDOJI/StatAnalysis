@@ -17,17 +17,23 @@ Test___MeanDiff___Single.Response___Results.Extractor = function(p, var_group, v
   Mean.Diff_results = Mean.Diff_results %>% dplyr::rename("MeanDiff_p.value":="p.value")
   Mean.Diff_results = Mean.Diff_results %>% dplyr::rename("MeanDiff_statistic":="statistic")
   Mean.Diff_results = Mean.Diff_results %>% dplyr::rename("MeanDiff_Method":="method")
-
-
+  Mean.Diff_results$MeanDiff_p.value.signif = SUB___P.vals.Signif.Stars(Mean.Diff_results$MeanDiff_p.value)
+  Mean.Diff_results = Mean.Diff_results %>% dplyr::relocate(MeanDiff_p.value.signif, .after = MeanDiff_Method)
 
   #===========================================================================
   # Comparison results
   #===========================================================================
   Comparison_results = Mean.Diff_results.list$pairwise_comparisons_data
-  Comparison_results = Comparison_results %>% dplyr::rename("PostHoc_p.value_adj":="p.value")
-  Comparison_results = Comparison_results %>% dplyr::rename("PostHoc_statistic":="statistic")
-  Comparison_results = Comparison_results %>% dplyr::rename("PostHoc_Test":="test")
-  Comparison_results = dplyr::bind_cols(Comparison_results, PostHoc_p.value.signif = SUB___p.vals_signif_stars(Comparison_results$PostHoc_p.value_adj))
+  if(!is.null(Comparison_results)){
+    Comparison_results = Mean.Diff_results.list$pairwise_comparisons_data
+    Comparison_results = Comparison_results %>% dplyr::rename("PostHoc_p.value_adj":="p.value")
+    if("statistics" %in% names(Comparison_results)){
+      Comparison_results = Comparison_results %>% dplyr::rename("PostHoc_statistic":="statistic")
+    }
+    Comparison_results = Comparison_results %>% dplyr::rename("PostHoc_Test":="test")
+    Comparison_results = dplyr::bind_cols(Comparison_results, PostHoc_p.value.signif = SUB___P.vals.Signif.Stars(Comparison_results$PostHoc_p.value_adj))
+  }
+
 
   return(list(Mean.Diff=Mean.Diff_results, Post.Hoc=Comparison_results))
 }

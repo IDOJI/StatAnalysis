@@ -11,7 +11,7 @@ Test___Equal.Var___When.Norm.False = function(df, var_response, var_group, is.no
   #===========================================================================
   have_outliers = sapply(data.list, FUN=function(ith_df, ...){
     #ith_df = data.list[[1]]
-    SUB___have_outlier(ith_df[,var_response] %>% unlist, by="IQR") %>% return
+    SUB___Have.Outlier(ith_df[,var_response] %>% unlist, by="IQR") %>% return
   })
   have_outliers = sum(have_outliers)==length(data.list)
 
@@ -28,7 +28,7 @@ Test___Equal.Var___When.Norm.False = function(df, var_response, var_group, is.no
     results.list[[2]] = "Fligner-Killeen"
     results.list[[3]] = results.list[[1]]$p.value %>% as.numeric
   }else{
-    results.list[[1]] =car::leveneTest(y=df[,var_response] %>% unlist,  group=df[,var_group] %>% unlist)
+    results.list[[1]] =car::leveneTest(y=df[,var_response] %>% unlist,  group=df[,var_group] %>% unlist) %>% suppressWarnings()
     results.list[[2]] = "Levene"
     results.list[[3]] = results.list[[1]]$`Pr(>F)`[1] %>% as.numeric
   }
